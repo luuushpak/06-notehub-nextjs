@@ -10,7 +10,7 @@ const api = axios.create({
 
 interface FetchNotesProps {
   query: string;
-  sheet: number;
+  page: number;
 }
 
 interface CreateNoteProps {
@@ -26,7 +26,7 @@ interface ApiFetchNotes {
 
 export async function fetchNotes({
   query: search,
-  sheet: page,
+  page,
 }: FetchNotesProps): Promise<ApiFetchNotes> {
   const response = await api.get<ApiFetchNotes>("/notes", {
     params: {
@@ -46,6 +46,12 @@ export async function createNote(newNote: CreateNoteProps): Promise<Note> {
 }
 export async function deleteNote(id: string): Promise<Note> {
   const response = await api.delete<Note>(`/notes/${id}`);
+
+  return response.data;
+}
+
+export async function fetchNoteById(id: string): Promise<Note> {
+  const response = await api.get<Note>(`/notes/${id}`);
 
   return response.data;
 }
